@@ -1,64 +1,79 @@
-#include<iostream>
+#include <iostream>          // Includes input-output stream library
 using namespace std;
-int Binary_Search(int arr[],int n,int key)
+
+/*
+ Binary_Search function:
+ arr[] -> array in which we search
+ n     -> number of elements in array
+ key   -> element to be searched
+ Returns index of key if found, otherwise -1
+*/
+int Binary_Search(int arr[], int n, int key)
 {
-    int start,mid,end;
-    start=0;
-    end=n-1;
-    while(start<=end)
+    int start, mid, end;     // start = first index, end = last index, mid = middle index
+
+    start = 0;               // Initialize start to first index
+    end = n - 1;             // Initialize end to last index
+
+    // Loop runs until search space becomes invalid
+    while (start <= end)
     {
-        mid=(start+end)/2;
-        if(arr[mid]==key)
+        mid = (start + end) / 2;   // Calculate middle index
+
+        // If middle element matches the key
+        if (arr[mid] == key)
         {
-            cout<<"key Found in index:"<<mid<<endl;
-            break;
+            cout << "Key found at index: " << mid << endl;
+            return mid;            // Return index immediately
         }
-        
+
+        // If key is greater than middle element
+        else if (key > arr[mid])
+        {
+            start = mid + 1;       // Search in right half of array
+        }
+
+        // If key is smaller than middle element
         else
         {
-            if(key>arr[mid])
-            {
-                start=mid+1;
-            }
-            else
-            {
-                end=mid-1;
-            }
-         
+            end = mid - 1;         // Search in left half of array
         }
-       
-           
     }
-    if(arr[mid]==key)
-    {
-        return mid;
-    }
-    return -1;
+
+    return -1;   // If loop ends, key was not found
 }
+
 int main()
 {
-    int i,n,key;
-    cout<<"Enter number of elements in array"<<endl<<":";
-    cin>>n;
-    int arr[n];
-    cout<<"Enter the elements of array"<<endl;
-    for (i=0;i<n;i++)
-    {
-        cout<<":";
-        cin>>arr[i];
+    int n, key;
 
-    }
-    cout<<"Enter the key you want to find in array"<<endl<<":";
-    cin>>key;
-    int Result_Index=Binary_Search(arr,n,key);
-    if (Result_Index!=-1)
+    cout << "Enter number of elements in array: ";
+    cin >> n;
+
+    int arr[n];   // Declare array of size n
+
+    cout << "Enter the elements of array" << endl;
+    for (int i = 0; i < n; i++)
     {
-        cout<<"Key found at :"<<Result_Index<<endl;
+        cin >> arr[i];      // Input array elements
     }
-    else 
+
+    cout << "Enter the key you want to find: ";
+    cin >> key;
+
+    // Call Binary_Search function
+    int Result_Index = Binary_Search(arr, n, key);
+
+    // Check function return value
+    if (Result_Index != -1)
     {
-        cout<<"Key not found "<<endl;
+        cout << "Key found at index: " << Result_Index << endl;
     }
-    return 0;
-    
+    else
+    {
+        cout << "Key not found in array" << endl;
+    }
+
+    return 0;   // Program ends successfully
 }
+

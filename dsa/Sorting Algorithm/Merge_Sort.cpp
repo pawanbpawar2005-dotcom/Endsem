@@ -1,89 +1,79 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
+/*
+ combine function:
+ Merges two sorted subarrays into a single sorted array
+*/
 void combine(int a[], int s, int m, int e)
 {
-    int* buffer = new int [e+1]; //for total size for merged array
-    
-    int k = s;
-    while(k<=e)
-    {
+    int* buffer = new int[e + 1];   // Temporary array
+
+    // Copy original array into buffer
+    for (int k = s; k <= e; k++)
         buffer[k] = a[k];
-        k = k+1;
+
+    int i = s;       // Pointer for left subarray
+    int j = m + 1;   // Pointer for right subarray
+    int k = s;       // Pointer for main array
+
+    // Merge elements in sorted order
+    while (i <= m && j <= e)
+    {
+        if (buffer[i] <= buffer[j])
+            a[k++] = buffer[i++];
+        else
+            a[k++] = buffer[j++];
     }
 
-    int i = s;
-    int j = m+1;
-    k = s;
-    while(i<=m && j<=e)
-    {
-        if(buffer[i] <= buffer[j])
-        {
-            a[k] = buffer[i];
-            i = i+1;
-        }
-        else
-        {
-            a[k] = buffer[j];
-            j = j+1;
-        }
-    k = k+1;
-    }
-    while(i<=m)
-    {
-        a[k] = buffer[i];
-        i = i+1;
-        k = k+1;
-    }
-    while(j<=e)
-    {
-        a[k] = buffer[j];
-        j = j+1;
-        k = k+1;
-    }
- delete[] buffer;
+    // Copy remaining elements (if any)
+    while (i <= m)
+        a[k++] = buffer[i++];
+
+    while (j <= e)
+        a[k++] = buffer[j++];
+
+    delete[] buffer;     // Free dynamic memory
 }
 
-
-//auxiliary functon(helper function)
+/*
+ Recursive merge sort function
+*/
 void mrgSort(int a[], int s, int e)
 {
-    if(s>=e)
-    {
-        return;
-    }
-    int m = (s+e)/2;
-    mrgSort(a, s, m);
-    mrgSort(a, m+1, e);
-    combine(a, s, m, e);
+    if (s >= e)
+        return;          // Base case
 
+    int m = (s + e) / 2;
+    mrgSort(a, s, m);        // Sort left half
+    mrgSort(a, m + 1, e);    // Sort right half
+    combine(a, s, m, e);     // Merge halves
 }
 
-
-void mrgSort(int a[], int n)              //wrapper function
+/*
+ Wrapper function for merge sort
+*/
+void mrgSort(int a[], int n)
 {
-    mrgSort(a, 0, n-1);
+    mrgSort(a, 0, n - 1);
 }
 
 void display(int a[], int n)
 {
-    int i = 0;
-    while(i<n)
-    {
-        cout<<a[i]<<",";
-        i++;
-    }
-    cout<<endl;
+    for (int i = 0; i < n; i++)
+        cout << a[i] << ",";
+    cout << endl;
 }
-
-
 
 int main()
 {
     int arr[] = {102, 12, 193, 1932, 192, 11, 293, 39, 239};
-    int size= sizeof(arr)/sizeof(int);
+    int size = sizeof(arr) / sizeof(int);
+
     display(arr, size);
     mrgSort(arr, size);
     display(arr, size);
+
     return 0;
 }
+
